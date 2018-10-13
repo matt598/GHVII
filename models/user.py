@@ -2,21 +2,12 @@ import bcrypt
 
 from db import db
 
-
-language_association = db.Table(
-    'language_association',
-    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
-    db.Column('language_id', db.Integer, db.ForeignKey('language.id'), primary_key=True),
-)
-
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     name = db.Column(db.String)
     email = db.Column(db.String, unique=True)
     password = db.Column(db.String)
-
-    languages = db.relationship('Language', secondary=language_association)
 
     def __init__(self, name: str, email: str, password: str):
         self.name = name
