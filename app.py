@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_login import current_user
 
 from db import db
@@ -31,7 +31,7 @@ def home():
     if current_user.is_authenticated:
         return 'Hello, %s.' % current_user.name
 
-    return 'Hello, world!'
+    return render_template('Landing.html')
 
 
 if __name__ == '__main__':
