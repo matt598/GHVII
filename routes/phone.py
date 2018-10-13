@@ -125,6 +125,8 @@ def country_select():
     t = Tropo()
     t.on(event='continue', next=url_for('phone.hello'))
 
+    return t.RenderJson()
+
 
 @phone_app.route('/hello', methods=['POST'])
 def hello():
