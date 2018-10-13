@@ -115,6 +115,13 @@ def country_select():
 
     s.set('country', answer)
 
+    s_language = s.get('language')
+    if not s_language:
+        countries = data.get_countries()
+        for s_country in countries:
+            if s_country['name'].lower() == answer.lower():
+                s.set('language', s_country['languages'][0]['name'])
+
     t = Tropo()
     t.on(event='continue', next=url_for('phone.hello'))
 
