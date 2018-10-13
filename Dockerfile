@@ -1,6 +1,6 @@
 FROM python:3.6-alpine
 EXPOSE 8080
-RUN apk add ca-certificates
+RUN apk add ca-certificates autoconf automake g++ make libffi-dev
 RUN pip install pipenv
 COPY . /app
 WORKDIR /app
