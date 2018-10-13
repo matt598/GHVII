@@ -7,6 +7,7 @@ import models
 
 from routes.user import user_app
 from routes.api import api_app
+from routes.phone import phone_app
 
 app = Flask(__name__)
 app.config.from_envvar('ROBIN_CONFIG')
@@ -16,6 +17,7 @@ login_manager.init_app(app)
 
 app.register_blueprint(user_app)
 app.register_blueprint(api_app)
+app.register_blueprint(phone_app)
 
 with app.app_context():
     db.create_all()
