@@ -9,6 +9,7 @@ pylint = "*"
 [packages]
 flask = "*"
 waitress = "*"
+bcrypt = "*"
 
 [requires]
 python_version = "3.6"
