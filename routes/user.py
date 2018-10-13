@@ -1,5 +1,5 @@
 from flask import Blueprint, Response, abort, jsonify, redirect, request, url_for
-from flask_login import login_required, login_user, logout_user
+from flask_login import login_user, logout_user
 
 import models
 from db import db
