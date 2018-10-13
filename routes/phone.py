@@ -101,8 +101,22 @@ def country():
             say=_('Please select one of the following countries. %s') % country_list,
             timeout=5,
         )
+        t.on(event='continue', next=url_for('phone.country_select'))
 
     return t.RenderJson()
+
+
+@phone_app.route('/country/select', methods=['POST'])
+def country_select():
+    r = Result(request.data)
+    s = CallSession(r)
+
+    answer = r.getInterpretation()
+
+    s.set('country', answer)
+
+    t = Tropo()
+    t.on(event='continue', next=url_for('phone.hello'))
 
 
 @phone_app.route('/hello', methods=['POST'])
