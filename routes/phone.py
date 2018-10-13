@@ -42,10 +42,12 @@ def country():
         t.say('You selected')
         t.say(countries[0]['name'])
     else:
+        country_list = ', '.join(list(map(lambda country: country['name'], countries)))
+
         t.ask(
-            choices=', '.join(list(map(lambda country: country['name'], countries))),
+            choices=country_list,
             name='country',
-            say='Please select one of the following countries.',
+            say='Please select one of the following countries. %s' % country_list,
             timeout=5,
         )
 
