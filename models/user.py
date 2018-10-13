@@ -9,6 +9,12 @@ class User(db.Model):
     email = db.Column(db.String, unique=True)
     password = db.Column(db.String)
 
+    person_id = db.Column(db.Integer, db.ForeignKey('person.id'))
+    person = db.relationship('Person')
+
+    service_id = db.Column(db.Integer, db.ForeignKey('service.id'))
+    service = db.relationship('Service')
+
     def __init__(self, name: str, email: str, password: str):
         self.name = name
         self.email = email

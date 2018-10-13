@@ -1,0 +1,41 @@
+{% extends '_main.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-4 offset-md-4">
+            <h1>Find Person</h1>
+
+            {% for alert in get_flashed_messages() %}
+                <div class="alert alert-danger">
+                    {{ alert }}
+                </div>
+            {% endfor %}
+
+            <form method="POST" action="{{ url_for('person_lookup') }}">
+                <div class="form-group">
+                    <label for="person-id">Person ID</label>
+                    <input type="text" class="form-control" id="person-id" name="person-id" placeholder="Person ID">
+                </div>
+
+                <div class="form-group">
+                    <label for="last-name">Last Name</label>
+                    <input type="text" class="form-control" id="last-name" name="person-id" placeholder="Last Name">
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg">Find</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-sm-12 col-md-4 offset-md-4">
+            <p>
+                New Person?
+            </p>
+
+            <a href="{{ url_for('person_add') }}" class="btn btn-secondary">Add</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

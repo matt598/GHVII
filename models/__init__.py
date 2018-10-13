@@ -7,3 +7,4 @@ from models.service import Service
 from models.servicetype import ServiceType
 from models.servicehistory import ServiceHistory
 from models.servicereminder import ServiceReminder
+from models.servicenote import ServiceNote
