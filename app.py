@@ -3,6 +3,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 
 from db import db
 from login import login_manager
+from data import get_countries
 import models
 
 app = Flask(__name__)
@@ -80,6 +81,11 @@ def hidden_users():
     users = models.User.query.all()
 
     return jsonify(list(map(lambda user: {'id': user.id, 'email': user.email}, users)))
+
+
+@app.route('/api/countries')
+def countries():
+    return jsonify(get_countries())
 
 
 if __name__ == '__main__':

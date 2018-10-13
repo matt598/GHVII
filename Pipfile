@@ -5,6 +5,7 @@ name = "pypi"
 
 [dev-packages]
 pylint = "*"
+"autopep8" = "*"
 
 [packages]
 flask = "*"
@@ -12,6 +13,7 @@ waitress = "*"
 bcrypt = "*"
 flask-login = "*"
 flask-sqlalchemy = "*"
+requests = "*"
 
 [requires]
 python_version = "3.6"
