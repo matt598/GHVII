@@ -1,0 +1,23 @@
+pipelines:
+  test:
+    image: python:3.6-alpine
+    commands:
+      - python -m compileall .
+
+  docker:
+    image: plugins/docker
+    repo: registry.huefox.com/globalhack-robin
+    registry: registry.huefox.com
+    auto_tag: true
+    secrets: [ docker_username, docker_password ]
+    when:
+      branch: master
+
+  deploy:
+    image: appleboy/drone-ssh
+    host: cosmos.huefox.com
+    secrets: [ ssh_username, ssh_key ]
+    script:
+      - /home/drone/update-globalhack-robin.sh
+    when:
+      branch: master
