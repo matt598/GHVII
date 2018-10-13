@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
-from flask_login import current_user
 
 from db import db
 from login import login_manager
@@ -34,6 +33,11 @@ def home():
     return render_template('landing.html')
 
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+
 @app.route('/person/lookup', methods=['GET', 'POST'])
 def person_lookup():
     if request.method == 'GET':
@@ -50,7 +54,7 @@ def person_lookup():
     return redirect(url_for('person_view', id=person.id))
 
 
-@app.route('/person/add')
+@app.route('/person/add', methods=['GET', 'POST'])
 def person_add():
     if request.method == 'GET':
         return render_template(
@@ -59,17 +63,38 @@ def person_add():
             languages=models.Language.query.all(),
         )
 
-    return 'nyi'
+    first_name = request.form.get('first-name')
+    last_name = request.form.get('last-name')
+    email = request.form.get('email')
+    phone = request.form.get('phone')
+    country = request.form.get('country')
+    language = request.form.get('language')
+
+    person = models.Person()
+    person.first_name = first_name
+    person.last_name = last_name
+    person.email = email
+    person.phone = phone
+    person.origin_country = country
+
+    language = models.Language.query.get(language)
+    print(language)
+    person.languages.append(language)
+
+    db.session.add(person)
+    db.session.commit()
+
+    return redirect(url_for('person_view', person_id=person.id))
 
 
 @app.route('/person/<int:person_id>')
 def person_view(person_id):
-    person = models.Person.query.filter_by(id=person_id).first()
+    person = models.Person.query.get(person_id)
     if not person:
         flash('Unable to find person')
         return redirect(url_for('person_lookup'))
 
-    return person['name']
+    return render_template('person_view.html', person=person)
 
 
 @app.route('/service/history/add', methods=['GET', 'POST'])
