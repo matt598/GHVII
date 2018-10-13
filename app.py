@@ -51,7 +51,7 @@ def person_lookup():
         flash('Unable to find person')
         return render_template('lookup_user.html')
 
-    return redirect(url_for('person_view', id=person.id))
+    return redirect(url_for('person_view', person_id=person.id))
 
 
 @app.route('/person/add', methods=['GET', 'POST'])
