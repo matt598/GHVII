@@ -17,9 +17,11 @@ def get_countries() -> List[dict]:
     return countries
 
 
-def country_for_code(code: Union[int, str]) -> dict:
+def country_for_code(code: Union[int, str]) -> List[dict]:
     if isinstance(code, int):
         code = str(code)
+
+    countries = []
 
     for country in get_countries():
         callingCodes = country.get('callingCodes')
@@ -27,6 +29,6 @@ def country_for_code(code: Union[int, str]) -> dict:
             continue
 
         if code in callingCodes:
-            return country
+            countries.append(country)
 
-    return None
+    return countries
