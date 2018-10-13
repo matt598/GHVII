@@ -1,0 +1,11 @@
+translations:
+  Please enter your country code if you know it.:
+    en-us: Please enter your country code if you know it.
+  Which of the following languages would you prefer? %s:
+    en-us: Which of the following languages would you prefer? %s
+  Invalid country code, please try again.:
+    en-us: Invalid country code, please try again.
+  Please select one of the following countries. %s:
+    en-us: Please select one of the following countries. %s
+  You selected:
+    en-us: You selected

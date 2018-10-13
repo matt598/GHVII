@@ -1,6 +1,7 @@
 from typing import Union, List
 import requests
 from werkzeug.contrib.cache import SimpleCache
+import yaml
 
 
 c = SimpleCache()
@@ -32,3 +33,21 @@ def country_for_code(code: Union[int, str]) -> List[dict]:
             countries.append(country)
 
     return countries
+
+
+def _(key: str, lang: str = 'en-us') -> str:
+    lang = lang.lower()
+    translations = c.get('translations')
+    if not translations:
+        with open('translations.yml', 'r') as f:
+            translations = yaml.load(f)
+
+    translation = translations['translations'].get(key)
+    if not translation:
+        return key
+
+    inlang = translation.get(lang)
+    if not inlang:
+        return key
+
+    return inlang
