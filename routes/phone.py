@@ -4,7 +4,7 @@ from tropo import Tropo
 phone_app = Blueprint('phone', __name__, url_prefix='/phone')
 
 
-@phone_app.route('/index')
+@phone_app.route('/index', methods=['POST'])
 def index():
     t = Tropo()
     t.say('Hello, world!')
