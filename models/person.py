@@ -1,4 +1,5 @@
 from db import db
+from models.servicenote import ServiceNote
 
 
 language_association = db.Table(
@@ -17,3 +18,6 @@ class Person(db.Model):
     origin_country = db.Column(db.String)
 
     languages = db.relationship('Language', secondary=language_association)
+
+    def service_notes(self, service: int):
+        return ServiceNote.query.filter_by(service_id=service).all()
