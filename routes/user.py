@@ -16,7 +16,6 @@ def login():
     password = request.form.get('password')
 
     user = models.User.query.filter_by(email=email).first()
-    print(user)
     if not user:
         return abort(401)
 
@@ -24,6 +23,9 @@ def login():
         return abort(401)
 
     login_user(user)
+
+    print(user)
+    print(user.person, user.service)
 
     if user.person:
         return redirect(url_for('profile.view'))
