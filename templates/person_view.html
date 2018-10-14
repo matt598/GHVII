@@ -3,8 +3,14 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col-sm-12 col-md-6">
+        <div class="col">
             <h1>{{ person.first_name }} {{ person.last_name }} (ID {{ person.id }})</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <h2>Information</h2>
 
             <dl class="row">
                 <dt class="col-md-4">Email</dt>
@@ -19,6 +25,113 @@
                 <dt class="col-md-4">Prefered Language</dt>
                 <dd class="col-md-8">{{ person.languages[0].name }}</dd>
             </dl>
+        </div>
+
+        <div class="col-sm-12 col-md-6">
+            <h2>Internal person notes</h2>
+
+            {% for note in person.notes %}
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ note.date }}</h5>
+                    <p class="card-text">
+                        {{ note.note }}
+                    </p>
+                </div>
+            </div>
+            {% endfor %}
+
+            <h2>Add internal note</h2>
+
+            <form method="POST">
+                <input type="hidden" name="person" value="{{ person.id }}">
+                <input type="hidden" name="service" value="{{ current_user.service.id }}">
+
+                <div class="form-group">
+                    <label for="internal-note">Note</label>
+                    <textarea class="form-control" name="note" id="internal-note" placeholder="Note"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Add note</button>
+            </form>
+        </div>
+
+        <div class="col-sm-12 col-md-6">
+            <h2>History</h2>
+
+            {% for event in person.history %}
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ event.service.name }} @ {{ event.start_date }} - {{ event.end_date }}</h5>
+                    <p class="card-text">
+                        {{ event.case_notes }}
+                    </p>
+                </div>
+            </div>
+            {% else %}
+                <p>None found.</p>
+            {% endfor %}
+
+            <h2>Add to history</h2>
+
+            <form method="POST">
+                <input type="hidden" name="person" value="{{ person.id }}">
+                <input type="hidden" name="service" value="{{ current_user.service.id }}">
+
+                <div class="form-group">
+                    <label for="started-at">Started at</label>
+                    <input type="date" class="form-control" id="started-at" name="started-at" placeholder="Started at">
+                </div>
+
+                <div class="form-group">
+                    <label for="ended-at">Ended at</label>
+                    <input type="date" class="form-control" id="ended-at" name="ended-at" placeholder="Started at">
+                </div>
+
+                <div class="form-group">
+                    <label for="case-notes">Case notes</label>
+                    <textarea class="form-control" id="case-notes" name="case-notes" placeholder="Case notes"></textarea>
+                    <small class="form-text text-muted">Case notes are visible between services but not to the person.</small>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Add event</button>
+            </form>
+        </div>
+
+        <div class="col-sm-12 col-md-6">
+            <h2>Appointments</h2>
+
+            {% for appointment in person.appointments %}
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ appointment.service.name }} @ {{ note.date }}</h5>
+                    <p class="card-text">
+                        {{ appointment.message }}
+                    </p>
+                </div>
+            </div>
+            {% else %}
+                <p>None scheduled.</p>
+            {% endfor %}
+
+            <h2>Add appointment</h2>
+
+            <form method="POST">
+                <input type="hidden" name="person" value="{{ person.id }}">
+                <input type="hidden" name="service" value="{{ current_user.service.id }}">
+
+                <div class="form-group">
+                    <label for="date">Date</label>
+                    <input class="form-control" type="date" name="date" id="date" placeholder="Date">
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea class="form-control" name="message" id="message" placeholder="Message"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Add appointment</button>
+            </form>
         </div>
     </div>
 </div>

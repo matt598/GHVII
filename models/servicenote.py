@@ -8,7 +8,7 @@ class ServiceNote(db.Model):
     service = db.relationship('Service')
 
     person_id = db.Column(db.Integer, db.ForeignKey('person.id'))
-    person = db.relationship('Person')
+    person = db.relationship('Person', backref='notes')
 
     date = db.Column(db.Date)
     note = db.Column(db.String)
