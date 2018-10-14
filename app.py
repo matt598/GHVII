@@ -1,13 +1,13 @@
-from flask import Flask, render_template, request, flash, redirect, url_for
+from flask import Flask, render_template, request
 
 from db import db
 from login import login_manager
 import models
-import data
 
 from routes.user import user_app
 from routes.api import api_app
 from routes.phone import phone_app
+from routes.person import person_app
 
 app = Flask(__name__)
 app.config.from_envvar('ROBIN_CONFIG')
@@ -18,6 +18,7 @@ login_manager.init_app(app)
 app.register_blueprint(user_app)
 app.register_blueprint(api_app)
 app.register_blueprint(phone_app)
+app.register_blueprint(person_app)
 
 with app.app_context():
     db.create_all()
@@ -36,65 +37,6 @@ def home():
 @app.route('/about')
 def about():
     return render_template('about.html')
-
-
-@app.route('/person/lookup', methods=['GET', 'POST'])
-def person_lookup():
-    if request.method == 'GET':
-        return render_template('lookup_user.html')
-
-    person_id = request.form.get('person-id')
-    last_name = request.form.get('last-name')
-
-    person = models.Person.query.filter_by(id=person_id, last_name=last_name).first()
-    if not person:
-        flash('Unable to find person')
-        return render_template('lookup_user.html')
-
-    return redirect(url_for('person_view', person_id=person.id))
-
-
-@app.route('/person/add', methods=['GET', 'POST'])
-def person_add():
-    if request.method == 'GET':
-        return render_template(
-            'person_add.html',
-            countries=data.get_countries(),
-            languages=models.Language.query.all(),
-        )
-
-    first_name = request.form.get('first-name')
-    last_name = request.form.get('last-name')
-    email = request.form.get('email')
-    phone = request.form.get('phone')
-    country = request.form.get('country')
-    language = request.form.get('language')
-
-    person = models.Person()
-    person.first_name = first_name
-    person.last_name = last_name
-    person.email = email
-    person.phone = phone
-    person.origin_country = country
-
-    language = models.Language.query.get(language)
-    print(language)
-    person.languages.append(language)
-
-    db.session.add(person)
-    db.session.commit()
-
-    return redirect(url_for('person_view', person_id=person.id))
-
-
-@app.route('/person/<int:person_id>')
-def person_view(person_id):
-    person = models.Person.query.get(person_id)
-    if not person:
-        flash('Unable to find person')
-        return redirect(url_for('person_lookup'))
-
-    return render_template('person_view.html', person=person)
 
 
 @app.route('/service/history/add', methods=['GET', 'POST'])

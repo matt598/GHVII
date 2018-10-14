@@ -10,7 +10,6 @@ class Service(db.Model):
     description = db.Column(db.String)
     website = db.Column(db.String)
     phone = db.Column(db.String)
-    primaryCountry = db.Column(db.String)
 
     service_type_id = db.Column(db.Integer, db.ForeignKey('service_type.id'), nullable=False)
     service_type = db.relationship('ServiceType')

@@ -23,15 +23,21 @@
                 <dd class="col-md-8">{{ person.origin_country }}</dd>
 
                 <dt class="col-md-4">Prefered Language</dt>
-                <dd class="col-md-8">{{ person.languages[0].name }}</dd>
+                <dd class="col-md-8">
+                    {% if person.languages | length > 0 %}
+                    {{ person.languages[0].name }}
+                    {% else %}
+                    Unknown
+                    {% endif %}
+                </dd>
             </dl>
         </div>
 
         <div class="col-sm-12 col-md-6">
-            <h2>Internal person notes</h2>
+            <h2>Internal notes</h2>
 
             {% for note in person.notes %}
-            <div class="card">
+            <div class="card mb-2">
                 <div class="card-body">
                     <h5 class="card-title">{{ note.date }}</h5>
                     <p class="card-text">
@@ -43,7 +49,7 @@
 
             <h2>Add internal note</h2>
 
-            <form method="POST">
+            <form method="POST" action="{{ url_for('person.note') }}">
                 <input type="hidden" name="person" value="{{ person.id }}">
                 <input type="hidden" name="service" value="{{ current_user.service.id }}">
 
@@ -60,21 +66,27 @@
             <h2>History</h2>
 
             {% for event in person.history %}
-            <div class="card">
+            <div class="card mb-2">
                 <div class="card-body">
-                    <h5 class="card-title">{{ event.service.name }} @ {{ event.start_date }} - {{ event.end_date }}</h5>
+                    <h5 class="card-title">
+                        {{ event.service.name }} @
+                        {% if event.started_at %}
+                            {{ event.started_at }} -
+                        {% endif %}
+                        {{ event.ended_at }}
+                    </h5>
                     <p class="card-text">
                         {{ event.case_notes }}
                     </p>
                 </div>
             </div>
             {% else %}
-                <p>None found.</p>
+            <p>None found.</p>
             {% endfor %}
 
             <h2>Add to history</h2>
 
-            <form method="POST">
+            <form method="POST" action="{{ url_for('person.history') }}">
                 <input type="hidden" name="person" value="{{ person.id }}">
                 <input type="hidden" name="service" value="{{ current_user.service.id }}">
 
@@ -85,7 +97,7 @@
 
                 <div class="form-group">
                     <label for="ended-at">Ended at</label>
-                    <input type="date" class="form-control" id="ended-at" name="ended-at" placeholder="Started at">
+                    <input type="date" class="form-control" id="ended-at" name="ended-at" placeholder="Ended at">
                 </div>
 
                 <div class="form-group">
@@ -102,27 +114,27 @@
             <h2>Appointments</h2>
 
             {% for appointment in person.appointments %}
-            <div class="card">
+            <div class="card mb-2">
                 <div class="card-body">
-                    <h5 class="card-title">{{ appointment.service.name }} @ {{ note.date }}</h5>
+                    <h5 class="card-title">{{ appointment.service.name }} @ {{ appointment.date }}</h5>
                     <p class="card-text">
                         {{ appointment.message }}
                     </p>
                 </div>
             </div>
             {% else %}
-                <p>None scheduled.</p>
+            <p>None scheduled.</p>
             {% endfor %}
 
             <h2>Add appointment</h2>
 
-            <form method="POST">
+            <form method="POST" action="{{ url_for('person.appointment') }}">
                 <input type="hidden" name="person" value="{{ person.id }}">
                 <input type="hidden" name="service" value="{{ current_user.service.id }}">
 
                 <div class="form-group">
                     <label for="date">Date</label>
-                    <input class="form-control" type="date" name="date" id="date" placeholder="Date">
+                    <input class="form-control" type="datetime-local" name="date" id="date" placeholder="Date">
                 </div>
 
                 <div class="form-group">

@@ -14,7 +14,7 @@
                 </div>
             {% endfor %}
 
-            <form method="POST" action="{{ url_for('person_lookup') }}">
+            <form method="POST" action="{{ url_for('person.find') }}">
                 <div class="form-group">
                     <label for="person-id">Person ID</label>
                     <input type="text" class="form-control" id="person-id" name="person-id" placeholder="Person ID">
@@ -36,7 +36,7 @@
                 New Person?
             </p>
 
-            <a href="{{ url_for('person_add') }}" class="btn btn-secondary">Add</a>
+            <a href="{{ url_for('person.add') }}" class="btn btn-secondary">Add</a>
         </div>
     </div>
 </div>
