@@ -1,0 +1,45 @@
+{% extends '_main.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-4 offset-md-4">
+            <h1>Sign in</h1>
+
+            {% for alert in get_flashed_messages() %}
+            <div class="alert alert-danger">
+                {{ alert }}
+            </div>
+            {% endfor %}
+
+            <form method="POST">
+                <div class="form-group">
+                    <label for="email">Email address</label>
+                    <input type="email" name="email" class="form-control" id="email">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" class="form-control" id="password">
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg">Sign in</button>
+            </form>
+
+            <div>
+                <h4>Testing Logins</h4>
+                <a href="javascript:log('provider@robin', 'provider');" class="btn btn-sm btn-secondary">provider</a>
+                <a href="javascript:log('provider2@robin', 'provider');" class="btn btn-sm btn-secondary">provider2</a>
+                <a href="javascript:log('user@robin', 'user');" class="btn btn-sm btn-secondary">user</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function log(email, password) {
+            document.getElementById('email').value = email;
+            document.getElementById('password').value = password;
+        }
+    </script>
+</div>
+{% endblock %}

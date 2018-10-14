@@ -1,4 +1,4 @@
-from flask import Blueprint, Response, abort, jsonify, redirect, request, url_for
+from flask import Blueprint, abort, jsonify, redirect, request, url_for, render_template
 from flask_login import login_user, logout_user
 
 import models
@@ -9,29 +9,29 @@ user_app = Blueprint('login', __name__, url_prefix='/auth')
 
 @user_app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        email = request.form.get('email')
-        password = request.form.get('password')
+    if request.method == 'GET':
+        return render_template('login.html')
 
-        user = models.User.query.filter_by(email=email).first()
-        print(user)
-        if not user:
-            return abort(401)
+    email = request.form.get('email')
+    password = request.form.get('password')
 
-        if not user.check_password(password):
-            return abort(401)
+    user = models.User.query.filter_by(email=email).first()
+    print(user)
+    if not user:
+        return abort(401)
 
-        login_user(user)
+    if not user.check_password(password):
+        return abort(401)
 
-        return redirect(url_for('home'))
-    else:
-        return Response('''
-        <form action="" method="post">
-            <p><input type=text name=email>
-            <p><input type=password name=password>
-            <p><input type=submit value=Login>
-        </form>
-        ''')
+    login_user(user)
+
+    if user.person:
+        return redirect(url_for('profile.view'))
+
+    if user.service:
+        return redirect(url_for('person.find'))
+
+    return redirect(url_for('home'))
 
 
 @user_app.route('/logout')
