@@ -9,9 +9,9 @@
             <h1>Find Person</h1>
 
             {% for alert in get_flashed_messages() %}
-                <div class="alert alert-danger">
-                    {{ alert }}
-                </div>
+            <div class="alert alert-danger">
+                {{ alert }}
+            </div>
             {% endfor %}
 
             <form method="POST" action="{{ url_for('person.find') }}">
@@ -40,4 +40,17 @@
         </div>
     </div>
 </div>
+
+<div id="input-helper" style="display: none; background-color: lightgray; position: fixed; padding: 10px; right: 0; bottom: 0; height: 100px; width: 300px;">
+    <h2>Input Helper</h2>
+
+    <div>
+        No suggestions
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/letters.js') }}"></script>
+<script>
+    new LetterSuggestor('input[name$="-name"]');
+</script>
 {% endblock %}

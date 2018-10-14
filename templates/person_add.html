@@ -67,54 +67,6 @@
 
 <script src="{{ url_for('static', filename='js/letters.js') }}"></script>
 <script>
-    const nameFields = document.querySelectorAll('input[name$="-name"]');
-    const helper = document.getElementById('input-helper');
-
-    function hadInput(ev) {
-        const suggested = getSuggestedForInput(ev.target.value);
-        const container = helper.querySelector('div');
-        if (!suggested) {
-            container.innerHTML = 'No suggestions';
-            return;
-        }
-        container.innerHTML = '';
-        suggested.map(suggestion => {
-            const btn = document.createElement('a');
-            btn.href = '#';
-            btn.innerHTML = suggestion;
-            btn.classList.add('btn', 'btn-sm', 'btn-secondary', 'mr-1');
-            btn.addEventListener('click', () => {
-                console.log(applySuggested(this.value, suggestion));
-                this.value = applySuggested(this.value, suggestion);
-                hadInput(ev);
-                this.focus();
-            });
-            return btn;
-        }).forEach(btn => {
-            container.appendChild(btn);
-        });
-    }
-
-    Array.from(nameFields).forEach(field => {
-        field.addEventListener('focus', ev => {
-            helper.style.display = 'block';
-            field.addEventListener('keyup', hadInput);
-        });
-    });
-
-    Array.from(document.querySelectorAll('input,textarea')).forEach(field => {
-        field.addEventListener('focus', ev => {
-            let wasOne = false;
-            nameFields.forEach(name => {
-                if (name.id == field.id) {
-                    wasOne = true;
-                }
-            });
-            if (!wasOne) {
-                helper.querySelector('div').innerHTML = 'No suggestions';
-                helper.style.display = 'none';
-            }
-        });
-    });
+    new LetterSuggestor('input[name$="-name"]');
 </script>
 {% endblock %}
