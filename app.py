@@ -8,6 +8,7 @@ from routes.user import user_app
 from routes.api import api_app
 from routes.phone import phone_app
 from routes.person import person_app
+from routes.profile import profile_app
 
 app = Flask(__name__)
 app.config.from_envvar('ROBIN_CONFIG')
@@ -19,6 +20,7 @@ app.register_blueprint(user_app)
 app.register_blueprint(api_app)
 app.register_blueprint(phone_app)
 app.register_blueprint(person_app)
+app.register_blueprint(profile_app)
 
 with app.app_context():
     db.create_all()

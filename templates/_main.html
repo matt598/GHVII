@@ -39,6 +39,10 @@
         <li class="nav-item {% if page == 'lookup' %}active{% endif %}">
           <a class="nav-link" href="{{ url_for('person.find') }}">Find person</a>
         </li>
+        {% elif current_user.person %}
+        <li class="nav-item {% if page == 'person' %}active{% endif %}">
+          <a class="nav-link" href="{{ url_for('profile.view') }}">View history</a>
+        </li>
         {% endif %}
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('login.logout') }}">Sign out</a>

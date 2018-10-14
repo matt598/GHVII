@@ -1,0 +1,36 @@
+{% extends '_main.html' %}
+
+{% set page = 'person' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>Hello {{ current_user.person.first_name }} {{ current_user.person.last_name }}</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <h2>My history</h2>
+
+            {% for event in current_user.person.history %}
+                <div class="card col-md-4">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ event.service.name }}</h5>
+                        <h6 class="card-subtitle mb-2">
+                            {% if event.started_at %}
+                                Started {{ event.started_at }} - Ended
+                            {% endif %}
+                            {{ event.ended_at }}
+                        </h6>
+                        <p class="card-text">
+                            No feedback provided.
+                        </p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
